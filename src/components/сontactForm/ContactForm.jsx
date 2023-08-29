@@ -1,35 +1,39 @@
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import css from './contactForm.module.css';
 import shortid from 'shortid';
-import { useSelector, useDispatch } from 'react-redux';
-import { setName, setNumber } from 'redux/contactFormReducer';
+import { useDispatch, useSelector } from 'react-redux';
 import { addContact } from 'redux/appReducer';
+import { useState } from 'react';
 
 export const ContactForm = () => {
-  const name = useSelector(state => state.contactForm.name); // подписались на данные из стора
-  const number = useSelector(state => state.contactForm.number);
+  const [name, setName] = useState('');
+  const [number, setNumber] = useState('');
+  const contacts = useSelector(state => state.app.contacts);
   const dispath = useDispatch();
 
   const handleInput = event => {
     const { name, value } = event.currentTarget;
     if (name === 'name') {
-      dispath(setName(value)); // отправили инструкцию на изменение стейта
-      // dispath({ type: 'contactForm/setName', payload: value });
+      setName(value);
     } else if (name === 'number') {
-      dispath(setNumber(value));
+      setNumber(value);
     }
   };
 
   const nameId = event => {
     event.preventDefault();
+    if (contacts.find(item => item.name === name)) {
+      alert(`${name} is already in contacts`);
+      return;
+    }
     const contact = {
       name, //: name
       number, //: number
       id: shortid.generate(),
     };
     dispath(addContact(contact));
-    dispath(setName(''));
-    dispath(setNumber(''));
+    setName('');
+    setNumber('');
   };
 
   return (
@@ -65,7 +69,7 @@ export const ContactForm = () => {
   );
 };
 
-ContactForm.protoTypes = {
-  name: PropTypes.string.isRequired,
-  number: PropTypes.string.isRequired,
-};
+// ContactForm.protoTypes = {
+//   name: PropTypes.string.isRequired,
+//   number: PropTypes.string.isRequired,
+// };

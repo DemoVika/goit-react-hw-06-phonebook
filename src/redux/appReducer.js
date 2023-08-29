@@ -11,10 +11,10 @@ const appSlice = createSlice({
   reducers: {
     // Объект редюсеров
     addContact(state, action) {
-      if (state.contacts.find(item => item.name === action.payload.name)) {
-        alert(`${action.payload} is already in contacts`);
-        return;
-      }
+      // if (state.contacts.find(item => item.name === action.payload.name)) {
+      //   alert(`${action.payload} is already in contacts`);
+      //   return;
+      // }
       state.contacts.push(action.payload);
       localStorage.setItem('contacts', JSON.stringify(state.contacts));
     },

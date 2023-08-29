@@ -1,10 +1,30 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { contactFormReducer } from './contactFormReducer';
 import { appReducer } from './appReducer';
+import { persistStore, persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage'; // используем localStorage
 
-export const store = configureStore({
+// import rootReducer from './reducers'; // ваш корневой редьюсер
+import { combineReducers } from 'redux';
+
+const persistConfig = {
+  key: 'root', // ключ, по которому будут сохранены данные
+  storage, // используем localStorage
+  blacklist: ['filter'],
+};
+
+const rootReducer = combineReducers({
   reducer: {
-    contactForm: contactFormReducer,
     app: appReducer,
   },
 });
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+
+export const store = configureStore(persistedReducer);
+export const persistor = persistStore(store);
+
+// export const store = configureStore({
+//   reducer: {
+//     app: appReducer,
+//   },
+// });
