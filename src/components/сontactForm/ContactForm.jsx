@@ -1,14 +1,15 @@
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import css from './contactForm.module.css';
 import shortid from 'shortid';
 import { useDispatch, useSelector } from 'react-redux';
 import { addContact } from 'redux/appReducer';
 import { useState } from 'react';
+import { selectContacts } from 'redux/selectors';
 
 export const ContactForm = () => {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
-  const contacts = useSelector(state => state.app.contacts);
+  const contacts = useSelector(selectContacts);
   const dispath = useDispatch();
 
   const handleInput = event => {
@@ -69,7 +70,7 @@ export const ContactForm = () => {
   );
 };
 
-// ContactForm.protoTypes = {
-//   name: PropTypes.string.isRequired,
-//   number: PropTypes.string.isRequired,
-// };
+ContactForm.protoTypes = {
+  name: PropTypes.string.isRequired,
+  number: PropTypes.string.isRequired,
+};
